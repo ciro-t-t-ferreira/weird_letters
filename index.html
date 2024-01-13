@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles.css">
+        <title>Weird Letters</title>
+    </head>
+    <body>
+        <div class="container">
+            <span class="letters" id="l1">?</span>
+            <span class="letters" id="l2">?</span>
+            <span class="letters" id="l3">?</span>
+            <span class="letters" id="l4">?</span>
+        </div>
+        <div class="container">
+            <span class="translits" id="t1">?</span>
+            <span class="translits" id="t2">?</span>
+            <span class="translits" id="t3">?</span>
+            <span class="translits" id="t4">?</span>
+        </div>
+        <div class="button">            
+            <button type="button"
+            onclick="refresh()">
+            REFRESH</button>                
+        </div>
+        
+        <label for="letterBox">Letter:</label>
+        <input type="checkbox" id="letterBox" onchange="()=>transliterationCheckbox('letterBox')" checked>
+        
+        <label for="transliterationBox">Tranliteration:</label>
+        <input type="checkbox" id="transliterationBox" onchange="()=>transliterationCheckbox('transliterationBox')" checked>
+
+        <script src="letters.js"></script>
+    </body>
+</html>
