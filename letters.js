@@ -64,19 +64,45 @@ function translitsOnOff(visible, elementName){
     }
 }
 
-function refresh(){   
+function randomIntFromInterval(min, max) { 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
 
-    document.getElementById('l1').innerHTML = devanagari[0][0];
-    document.getElementById('l2').innerHTML = devanagari[1][0];
-    document.getElementById('l3').innerHTML = devanagari[2][0];
-    document.getElementById('l4').innerHTML = devanagari[3][0];
-    document.getElementById('l5').innerHTML = devanagari[4][0];
+function fillOneMore (listaElementos){
+    let n = devanagari.length
+    let i = randomIntFromInterval(0,n-1)
+    if (listaElementos.includes(devanagari[i])){
+        fillOneMore(listaElementos)
+    } else {
+        let novalistaElementos = listaElementos.concat([devanagari[i]])
+        //console.log({array,newArray})
+        return novalistaElementos
+    }
+}
 
-    document.getElementById('t1').innerHTML = devanagari[0][1];
-    document.getElementById('t2').innerHTML = devanagari[1][1];
-    document.getElementById('t3').innerHTML = devanagari[2][1];
-    document.getElementById('t4').innerHTML = devanagari[3][1];
-    document.getElementById('t5').innerHTML = devanagari[4][1];
+function fillItems (N){
+    let _listaElementos = []
+    for (i=0;i<N;i++){
+        _listaElementos = fillOneMore(_listaElementos)
+    }
+    //console.log(_listaElementos)
+    return _listaElementos
+}
+
+function refresh(){  
+    let listaElementos = fillItems(5)
+
+    document.getElementById('l1').innerHTML = listaElementos[0][0];
+    document.getElementById('l2').innerHTML = listaElementos[1][0];
+    document.getElementById('l3').innerHTML = listaElementos[2][0];
+    document.getElementById('l4').innerHTML = listaElementos[3][0];
+    document.getElementById('l5').innerHTML = listaElementos[4][0];
+
+    document.getElementById('t1').innerHTML = listaElementos[0][1];
+    document.getElementById('t2').innerHTML = listaElementos[1][1];
+    document.getElementById('t3').innerHTML = listaElementos[2][1];
+    document.getElementById('t4').innerHTML = listaElementos[3][1];
+    document.getElementById('t5').innerHTML = listaElementos[4][1];
     
 }
 
