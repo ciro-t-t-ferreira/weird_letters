@@ -1,9 +1,6 @@
 let checkboxTranslit = document.getElementById('transliterationBox');
 let checkboxLetter = document.getElementById('letterBox');
 
-checkboxTranslit.addEventListener('change', transliterationCheckbox);
-checkboxLetter.addEventListener('change', transliterationCheckbox);
-
 let translits = document.querySelectorAll('.translits');
 let letters = document.querySelectorAll('.letters');
 
@@ -11,56 +8,27 @@ let letters = document.querySelectorAll('.letters');
 function transliterationCheckbox(element){
     
     if(element == 'transliterationBox'){
-        let visible;
-        
-        if (checkboxTranslit.checked){            
-            visible = true;
-            translitsOnOff(visible, 'transliterationBox');              
-        }
-        
-        else{            
-            visible = false;
-            translitsOnOff(visible, 'transliterationBox');
-        }
+        let visible = checkboxTranslit.checked;
+        translitsOnOff(visible,'transliterationBox');        
     }
     
     if(element == 'letterBox'){
-        let visible;
-        
-        if (checkboxLetter.checked){                    
-            visible = true;
-            translitsOnOff(visible, 'letterBox');              
-        }
-    
-        else{                        
-            visible = false;
-            translitsOnOff(visible, 'letterBox');    
-        }
+        let visible = checkboxLetter.checked;
+        translitsOnOff(visible, 'letterBox');        
     }
 }
 
 function translitsOnOff(visible, elementName){
     
     if(elementName == 'transliterationBox'){
-        for (let i=0; i < translits.length; i++){
-            if (visible == true){
-                translits[i].style.display = 'initial';
-            }
-            else if (visible == false){
-                translits[i].style.display = 'none';
-            }        
-        }
+        translits.forEach(translit => {
+            translit.style.display = visible ? 'initial' : 'none';
+        })        
     }
 
     if(elementName == 'letterBox'){
-        for (let i=0; i < letters.length; i++){
-            if (visible == true){                
-                letters[i].style.display = 'inline';
-            }
-            else if (visible == false){                
-                letters[i].style.display = 'none';
-            }        
-        }
+        letters.forEach(letter => {
+            letter.style.display = visible? 'initial' : 'none';})        
     }
 }
 
@@ -74,8 +42,7 @@ function fillOneMore (listaElementos){
     if (listaElementos.includes(devanagari[i])){
         fillOneMore(listaElementos)
     } else {
-        let novalistaElementos = listaElementos.concat([devanagari[i]])
-        //console.log({array,newArray})
+        let novalistaElementos = listaElementos.concat([devanagari[i]])        
         return novalistaElementos
     }
 }
@@ -84,30 +51,24 @@ function fillItems (N){
     let _listaElementos = []
     for (i=0;i<N;i++){
         _listaElementos = fillOneMore(_listaElementos)
-    }
-    //console.log(_listaElementos)
+    }    
     return _listaElementos
 }
 
 function refresh(){  
     let listaElementos = fillItems(5)
 
-    document.getElementById('l1').innerHTML = listaElementos[0][0];
-    document.getElementById('l2').innerHTML = listaElementos[1][0];
-    document.getElementById('l3').innerHTML = listaElementos[2][0];
-    document.getElementById('l4').innerHTML = listaElementos[3][0];
-    document.getElementById('l5').innerHTML = listaElementos[4][0];
+    for (let i = 0; i < 5; i++){
 
-    document.getElementById('t1').innerHTML = listaElementos[0][1];
-    document.getElementById('t2').innerHTML = listaElementos[1][1];
-    document.getElementById('t3').innerHTML = listaElementos[2][1];
-    document.getElementById('t4').innerHTML = listaElementos[3][1];
-    document.getElementById('t5').innerHTML = listaElementos[4][1];
+        document.getElementById('l'+ i).innerHTML = listaElementos[i][0];
+        document.getElementById('t'+ i).innerHTML = listaElementos[i][1];
+
+    }
     
 }
 
 const devanagari =[
-    ['क', 'ka'],
+    ['क', 'ka'], 
     ['ख', 'kha'],
     ['ग', 'ga'],
     ['घ', 'gha'],
