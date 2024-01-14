@@ -1,9 +1,34 @@
+/*Bug list:
+    -Sometimes I click to change the alphabet and it doesn't work, its kind of random 
+
+  Refat:
+    -Put the devanagari array in a external file (exports are mad complicated, need to study first)
+    -Lots of functions are receveing the alphabet variable, I would like to transform it on a global variable
+    -Tranform the pairs of letter/translit in a object (study the object section in W3Schools)
+    -Rethink the variables and functions names
+    
+  Feats:
+    - Generalize for diverse alphabets
+    - Make the number of letters adjustable (maybe from 1-10)
+    - WRITTABLE TRANSLIT BOX
+        - Allow to write in the translit box when it is turned off
+        - Creat a "autocomplet". Example: if the user writes 'ta' automatically show the options 'ta' and 'ṭa' below so he can confirm (allow him to navigate
+        using up and down arrows)
+        - When he press enter or exits the textbox change the color to green/red to show if he got the answer right or wrong 
+  Usability:
+    - Make just the letters disappear, not the whole box
+    - Keep the relative position of all buttons even when some disappear
+    - Make it responsive for smartphone
+    - Make it pretty*/
+
+
 let checkboxTranslit = document.getElementById('transliterationBox');
 let checkboxLetter = document.getElementById('letterBox');
 
 let translits = document.querySelectorAll('.translits');
 let letters = document.querySelectorAll('.letters');
 
+let alphabet
 
 function transliterationCheckbox(element){
     
@@ -36,27 +61,31 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function fillOneMore (listaElementos){
-    let n = devanagari.length
-    let i = randomIntFromInterval(0,n-1)
-    if (listaElementos.includes(devanagari[i])){
+function fillOneMore (listaElementos, alphabet){    
+        
+    let n = alphabet.length;
+    let i = randomIntFromInterval(0,n-1);
+    if (listaElementos.includes(alphabet[i])){
         fillOneMore(listaElementos)
     } else {
-        let novalistaElementos = listaElementos.concat([devanagari[i]])        
+        let novalistaElementos = listaElementos.concat([alphabet[i]])        
         return novalistaElementos
     }
 }
 
-function fillItems (N){
+function fillItems (N, alphabet){
+    
     let _listaElementos = []
     for (i=0;i<N;i++){
-        _listaElementos = fillOneMore(_listaElementos)
+        _listaElementos = fillOneMore(_listaElementos, alphabet);
     }    
     return _listaElementos
 }
 
-function refresh(){  
-    let listaElementos = fillItems(5)
+function refresh(){      
+    
+    
+    let listaElementos = fillItems(5, alphabet);
 
     for (let i = 0; i < 5; i++){
 
@@ -64,6 +93,18 @@ function refresh(){
         document.getElementById('t'+ i).innerHTML = listaElementos[i][1];
 
     }
+    
+}
+
+function changeAlphabet(numLetters, alphabetSelected){      
+    
+    const alphabetMap = {
+        "devanagari":devanagari,
+        "cyrillic":cyrillic
+    }
+    alphabet = alphabetMap[alphabetSelected];
+    
+    refresh();
     
 }
 
@@ -128,3 +169,39 @@ const devanagari =[
 
     ['अं', 'ṃ'],
     ['अः', 'ḥ']];
+
+const cyrillic = [
+    ['а', 'a'],
+    ['б', 'b'],
+    ['в', 'v'],
+    ['г', 'g'],
+    ['д', 'd'],
+    ['е', 'e'],
+    ['ё', 'yo'],
+    ['ж', 'zh'],
+    ['з', 'z'],
+    ['и', 'i'],
+    ['й', 'y'],
+    ['к', 'k'],
+    ['л', 'l'],
+    ['м', 'm'],
+    ['н', 'n'],
+    ['о', 'o'],
+    ['п', 'p'],
+    ['р', 'r'],
+    ['с', 's'],
+    ['т', 't'],
+    ['у', 'u'],
+    ['ф', 'f'],
+    ['х', 'kh'],
+    ['ц', 'ts'],
+    ['ч', 'ch'],
+    ['ш', 'sh'],
+    ['щ', 'sch'],
+    ['ъ', "'"],
+    ['ы', 'y'],
+    ['ь', ''],
+    ['э', 'e'],
+    ['ю', 'yu'],
+    ['я', 'ya']
+];
