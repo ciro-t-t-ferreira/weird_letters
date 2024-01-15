@@ -23,19 +23,25 @@
             <span class="translits" id="t2">?</span>
             <span class="translits" id="t3">?</span>
             <span class="translits" id="t4">?</span>
+
+            <input type="text" class="textbox" id="w0"></input>
+            <input type="text" class="textbox" id="w1"></input>
+            <input type="text" class="textbox" id="w2"></input>
+            <input type="text" class="textbox" id="w3"></input>
+            <input type="text" class="textbox" id="w4"></input>
         </div>
         <div class="button">            
             <button type="button"
             onclick="refresh()">
             REFRESH</button>                
-        </div>
+        </div>        
+        
+        <label for="transliterationBox">Transliteration:</label>
+        <input type="checkbox" id="transliterationBox" onchange="transliterationCheckbox('transliterationBox')" checked>
         
         <label for="letterBox">Letter:</label>
         <input type="checkbox" id="letterBox" onchange="transliterationCheckbox('letterBox')" checked>
         
-        <label for="transliterationBox">Transliteration:</label>
-        <input type="checkbox" id="transliterationBox" onchange="transliterationCheckbox('transliterationBox')" checked>
-
         <script src="letters.js"></script>
     </body>
 </html>

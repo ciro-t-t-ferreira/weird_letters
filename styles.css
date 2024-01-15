@@ -6,6 +6,10 @@
     align-items: end;
 }
 
+.textbox{
+    display:none;
+}
+
 .button{
     text-align:center
 }

@@ -7,8 +7,7 @@
     -Tranform the pairs of letter/translit in a object (study the object section in W3Schools)
     -Rethink the variables and functions names
     
-  Feats:
-    - Generalize for diverse alphabets
+  Feats:    
     - Make the number of letters adjustable (maybe from 1-10)
     - WRITTABLE TRANSLIT BOX
         - Allow to write in the translit box when it is turned off
@@ -27,6 +26,7 @@ let checkboxLetter = document.getElementById('letterBox');
 
 let translits = document.querySelectorAll('.translits');
 let letters = document.querySelectorAll('.letters');
+let textboxes = document.querySelectorAll('.textbox');
 
 let alphabet
 
@@ -46,14 +46,20 @@ function transliterationCheckbox(element){
 function translitsOnOff(visible, elementName){
     
     if(elementName == 'transliterationBox'){
+        
         translits.forEach(translit => {
             translit.style.display = visible ? 'initial' : 'none';
-        })        
+        })
+        textboxes.forEach(textbox =>{ 
+            textbox.style.display = visible? 'none': 'inline';
+            })        
     }
 
     if(elementName == 'letterBox'){
+        
         letters.forEach(letter => {
-            letter.style.display = visible? 'initial' : 'none';})        
+            letter.style.display = visible? 'initial' : 'none';});
+        
     }
 }
 
