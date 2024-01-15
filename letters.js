@@ -46,7 +46,7 @@ function transliterationCheckbox(element){
 function translitsOnOff(visible, elementName){
     
     if(elementName == 'transliterationBox'){
-        
+
         translits.forEach(translit => {
             translit.style.display = visible ? 'initial' : 'none';
         })
@@ -68,8 +68,12 @@ function randomIntFromInterval(min, max) {
 }
 
 function fillOneMore (listaElementos, alphabet){    
-        
-    let n = alphabet.length;
+    
+    if(alphabet == null){
+        window.alert("select a alphabet!"); //I can transform this in an exception and do something more classy
+    }
+
+    let n = alphabet.length;    
     let i = randomIntFromInterval(0,n-1);
     if (listaElementos.includes(alphabet[i])){
         fillOneMore(listaElementos)
@@ -88,10 +92,30 @@ function fillItems (N, alphabet){
     return _listaElementos
 }
 
-function refresh(){      
+let listaElementos;
+
+function checkanswer(t){    
     
+    const letterIndexMap = {
+        "w0":0,
+        "w1":1,
+        "w2":2,
+        "w3":3,
+        "w4":4
+    }
     
-    let listaElementos = fillItems(5, alphabet);
+    if (textboxes[letterIndexMap[t]].value == listaElementos[letterIndexMap[t]][1]){
+        textboxes[letterIndexMap[t]].style.backgroundColor = "lightgreen"; 
+    } 
+    else {
+        textboxes[letterIndexMap[t]].style.backgroundColor = "white";
+    }       
+}
+
+
+function refresh(){   
+        
+    listaElementos = fillItems(5, alphabet);
 
     for (let i = 0; i < 5; i++){
 
