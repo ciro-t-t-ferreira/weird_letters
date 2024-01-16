@@ -1,5 +1,8 @@
 /*Bug list:
-    -Sometimes I click to change the alphabet and it doesn't work, its kind of random 
+    -Sometimes I click to change the alphabet and it doesn't work, its kind of random (maybe it's related with the random generator of letters, check creating
+    a smaller alphabet)
+    -the first textbox shows a random hint
+    -aparently i have some issue when the transliteration is empty
 
   Refat:
     -Put the devanagari array in a external file (exports are mad complicated, need to study first)
@@ -102,14 +105,16 @@ function checkanswer(t){
         "w2":2,
         "w3":3,
         "w4":4
-    }
-    
-    if (textboxes[letterIndexMap[t]].value == listaElementos[letterIndexMap[t]][1]){
-        textboxes[letterIndexMap[t]].style.backgroundColor = "lightgreen"; 
-    } 
-    else {
-        textboxes[letterIndexMap[t]].style.backgroundColor = "white";
-    }       
+    }        
+        
+        if (textboxes[letterIndexMap[t]].value == listaElementos[letterIndexMap[t]][1]){
+            
+            textboxes[letterIndexMap[t]].style.backgroundColor = "lightgreen"; 
+        } 
+        else {            
+            textboxes[letterIndexMap[t]].style.backgroundColor = "lightcoral";
+        }        
+        
 }
 
 
