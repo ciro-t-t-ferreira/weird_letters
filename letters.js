@@ -31,7 +31,8 @@ let translits = document.querySelectorAll('.translits');
 let letters = document.querySelectorAll('.letters');
 let textboxes = document.querySelectorAll('.textbox');
 
-let alphabet
+let allBlocks = [];
+let alphabet;
 
 let currentId = null;
 class block{
@@ -40,16 +41,30 @@ class block{
         this.letter = letter;
         this.transliteraion = devanagariDictionary[letter];
         currentId += 1;
+        allBlocks.push(this);
+        console.log(allBlocks);
+    }
+
+}
+
+function eraseLastBlock(){
+    
+    if (allBlocks.length !== 0){
+        allBlocks = allBlocks.filter(block => block.id !== currentId -1);
+        currentId -= 1;
+        console.log(allBlocks); 
+    }
+    else {
+        window.alert('There are no blocks to be erased');
     }
 }
 
 let currentLetters = [];
 function createBlock(){
-    let newLetter = selectRandomLetter()
+    let newLetter = selectRandomLetter();
     let newBlock = new block(newLetter);
     
-    currentLetters.push(newLetter);
-    console.log(currentLetters);    
+    currentLetters.push(newLetter);        
 }
 
 function selectRandomLetter(){
@@ -68,7 +83,9 @@ function selectRandomLetter(){
     }
 
     else{
-        throw new Error('There is no more Alphabet Letters');
+        let noMoreLetters = 'There is no more Alphabet Letters'
+        window.alert(noMoreLetters);
+        throw new Error(noMoreLetters);
     }
 }
 
