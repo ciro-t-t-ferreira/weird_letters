@@ -43,7 +43,6 @@ class block{
         currentId += 1;
         allBlocks.push(this);                
     }
-
 }
 
 function eraseLastBlock(){
@@ -75,8 +74,8 @@ function eraseLastBlockHTML(erasedBlock){
     blockToErase.removeChild(transliterationToErase);
     blockContainer.removeChild(blockToErase);
 }
-
 let currentLetters = [];
+
 function createBlock(){
     let newLetter = selectRandomLetter();
     let newBlock = new block(newLetter);
@@ -104,6 +103,24 @@ function createHTMLBlock(newBlock){
     transliteraionHTML.setAttribute('id', (newBlock.id).toString() + 'transliteration')
     transliteraionHTML.innerHTML = newBlock.transliteraion;
     blockHTML.appendChild(transliteraionHTML);
+}
+
+function eraseAllBlocks(){
+    let numberOfBlocks = currentId;
+    for (let i=0; i < numberOfBlocks; i ++){
+        eraseLastBlock();
+    }
+}
+
+function refresh(){
+    
+    let numberOfBlocksToRecreate = currentId;
+
+    eraseAllBlocks();
+
+    for (let i=0; i < numberOfBlocksToRecreate; i ++){
+        createBlock();
+    }
 }
 
 function selectRandomLetter(){
@@ -213,7 +230,7 @@ function checkanswer(t){
 }
 
 
-function refresh(){   
+/*function refresh(){   
         
     listaElementos = fillItems(5, alphabet);
 
@@ -224,7 +241,7 @@ function refresh(){
 
     }
     
-}
+} */
 
 function changeAlphabet(numLetters, alphabetSelected){      
     
