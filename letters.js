@@ -53,8 +53,7 @@ function eraseLastBlock(){
         let erasedBlock = allBlocks.find(block => block.id == currentId -1);
         allBlocks = allBlocks.filter(block => block.id !== currentId -1);
         currentLetters.pop();        
-        
-        console.log(erasedBlock);
+                
         eraseLastBlockHTML(erasedBlock);
 
         currentId -= 1;                 
