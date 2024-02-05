@@ -18,11 +18,40 @@
     font-size: 50px;
 }
 
-span{
+.blockContainer{
+    text-align:center;
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+    align-items: center; /* Center items vertically */
+}
+
+.block{
+    display: inline;
+}
+
+.L{
+    display: block;
     background-color: lightseagreen;    
     border: 5px solid black;
-    padding: 15px;
-    margin: 15px;
-    font-size: 100px;             
+    padding: 15px;    
+    font-size: 100px;
+    margin: 7px;
+
 }
+
+.T{
+    display: block;
+    background-color: lightseagreen;    
+    border: 5px solid black;
+    padding: 15px;    
+    font-size: 100px;
+    margin: 7px;
+}
+
+/*span{
+    background-color: lightseagreen;    
+    border: 5px solid black;
+    padding: 15px;    
+    font-size: 100px;             
+}*/
 

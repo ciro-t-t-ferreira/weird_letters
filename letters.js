@@ -41,8 +41,7 @@ class block{
         this.letter = letter;
         this.transliteraion = devanagariDictionary[letter];
         currentId += 1;
-        allBlocks.push(this);
-        console.log(allBlocks);
+        allBlocks.push(this);                
     }
 
 }
@@ -50,13 +49,32 @@ class block{
 function eraseLastBlock(){
     
     if (allBlocks.length !== 0){
+        
+        let erasedBlock = allBlocks.find(block => block.id == currentId -1);
         allBlocks = allBlocks.filter(block => block.id !== currentId -1);
-        currentId -= 1;
-        console.log(allBlocks); 
+        currentLetters.pop();        
+        
+        console.log(erasedBlock);
+        eraseLastBlockHTML(erasedBlock);
+
+        currentId -= 1;                 
     }
     else {
         window.alert('There are no blocks to be erased');
     }
+}
+
+let blockContainer = document.getElementById('blockContainer');
+
+function eraseLastBlockHTML(erasedBlock){    
+    let blockToErase = document.getElementById(erasedBlock.id + 'block');
+    let letterToErase = document.getElementById(erasedBlock.id + 'letter');    
+
+    let transliterationToErase = document.getElementById(erasedBlock.id + 'transliteration');
+
+    blockToErase.removeChild(letterToErase);
+    blockToErase.removeChild(transliterationToErase);
+    blockContainer.removeChild(blockToErase);
 }
 
 let currentLetters = [];
@@ -64,21 +82,43 @@ function createBlock(){
     let newLetter = selectRandomLetter();
     let newBlock = new block(newLetter);
     
-    currentLetters.push(newLetter);        
+    currentLetters.push(newLetter);
+    
+    createHTMLBlock(newBlock);       
+}
+
+function createHTMLBlock(newBlock){    
+
+    let blockHTML = document.createElement('span');
+    blockHTML.classList.add('block');
+    blockHTML.setAttribute('id', (newBlock.id).toString() + 'block')
+    blockContainer.appendChild(blockHTML);
+
+    let letterHTML = document.createElement('span');
+    letterHTML.classList.add('L');
+    letterHTML.setAttribute('id', (newBlock.id).toString() + 'letter')
+    letterHTML.innerHTML = newBlock.letter;
+    blockHTML.appendChild(letterHTML);    
+
+    let transliteraionHTML = document.createElement('span');
+    transliteraionHTML.classList.add('T');
+    transliteraionHTML.setAttribute('id', (newBlock.id).toString() + 'transliteration')
+    transliteraionHTML.innerHTML = newBlock.transliteraion;
+    blockHTML.appendChild(transliteraionHTML);
 }
 
 function selectRandomLetter(){
 
-    const devanagariArray = Object.keys(devanagariDictionary);
-    if (currentLetters.length < devanagariArray.length){
-        let n = devanagariArray.length;     
+    const alphabetArray = Object.keys(devanagariDictionary);
+    if (currentLetters.length < alphabetArray.length){
+        let n = alphabetArray.length;     
         let i = randomIntFromInterval(0,n-1);
         
-        if (currentLetters.includes(devanagariArray[i])){
+        if (currentLetters.includes(alphabetArray[i])){
             return selectRandomLetter();
         }
         else{
-            return devanagariArray[i];
+            return alphabetArray[i];
         }      
     }
 
@@ -190,8 +230,8 @@ function refresh(){
 function changeAlphabet(numLetters, alphabetSelected){      
     
     const alphabetMap = {
-        "devanagari":devanagari,
-        "cyrillic":cyrillic
+        "devanagari":devanagariDictionary,
+        "cyrillic":cyrillicDictionary
     }
     alphabet = alphabetMap[alphabetSelected];
     
