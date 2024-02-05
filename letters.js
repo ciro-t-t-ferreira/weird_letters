@@ -43,11 +43,33 @@ class block{
     }
 }
 
+let currentLetters = [];
 function createBlock(){
-    let newBlock = new block('क');
-    console.log(newBlock.id);
-    console.log(newBlock.letter);
-    console.log(newBlock.transliteraion);
+    let newLetter = selectRandomLetter()
+    let newBlock = new block(newLetter);
+    
+    currentLetters.push(newLetter);
+    console.log(currentLetters);    
+}
+
+function selectRandomLetter(){
+
+    const devanagariArray = Object.keys(devanagariDictionary);
+    if (currentLetters.length < devanagariArray.length){
+        let n = devanagariArray.length;     
+        let i = randomIntFromInterval(0,n-1);
+        
+        if (currentLetters.includes(devanagariArray[i])){
+            return selectRandomLetter();
+        }
+        else{
+            return devanagariArray[i];
+        }      
+    }
+
+    else{
+        throw new Error('There is no more Alphabet Letters');
+    }
 }
 
 function transliterationCheckbox(element){
@@ -223,11 +245,16 @@ const devanagari =[
     ['अः', 'ḥ']];
 
 const devanagariDictionary = {
-  'क': 'ka',
+  'A': 'a',
+  'B': 'b',
+  'C': 'c',
+  'D': 'd'}
+  
+   /*'क': 'ka',
   'ख': 'kha',
   'ग': 'ga',
   'घ': 'gha',
-  'ङ': 'ṅa',
+  'ङ': 'ṅa'}
 
   'च': 'ca',
   'छ': 'cha',
@@ -283,7 +310,7 @@ const devanagariDictionary = {
 
   'अं': 'ṃ',
   'अः': 'ḥ'
-};
+}; */
 
 const cyrillic = [
 ['а', 'a'],
