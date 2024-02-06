@@ -107,6 +107,27 @@ function eraseAllBlocks(){
     }
 }
 
+function createAnswerBox(){
+
+    for (let i = 0; i < allBlocks.length; i++){
+        let transliterationDiv = document.getElementById(i + 'transliterationDiv');
+        let AnswerBox = document.createElement('input');
+        AnswerBox.setAttribute('type', 'text');
+        AnswerBox.setAttribute('id', i + 'AnswerBox');
+        AnswerBox.classList.add('answerBox');
+        transliterationDiv.appendChild(AnswerBox);
+    }
+}
+
+function eraseAnsewerBox(){
+    for (let i = 0; i < allBlocks.length; i++){
+        let transliterationDiv = document.getElementById(i + 'transliterationDiv');
+        let AnswerBox = document.getElementById(i + 'AnswerBox');
+        
+        transliterationDiv.removeChild(AnswerBox);
+    }
+}
+
 function refresh(){
     
     let numberOfBlocksToRecreate = currentId;
@@ -167,17 +188,15 @@ function translitsOnOff(visible, elementName){
 
     if(elementName == 'transliterationBox'){
 
-        let translits = document.querySelectorAll('.translits');
-        let textboxes = document.querySelectorAll('.textbox');
+        let translits = document.querySelectorAll('.translits');        
         
         translits.forEach(translit => {
             
             translit.style.display = visible ? 'initial' : 'none';            
             
         })
-        textboxes.forEach(textbox =>{ 
-            textbox.style.display = visible? 'none': 'inline';
-            })        
+        
+        visible? eraseAnsewerBox() : createAnswerBox(); 
     }
 }
 
@@ -212,7 +231,7 @@ function fillItems (N, alphabet){
 
 let listaElementos;
 
-function checkanswer(t){    
+function checkanswer(t){  //needs to be changed!  
     
     const letterIndexMap = {
         "w0":0,
