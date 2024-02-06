@@ -116,10 +116,14 @@ function createAnswerBox(){
         AnswerBox.setAttribute('id', i + 'AnswerBox');
         AnswerBox.classList.add('answerBox');
 
-        AnswerBox.addEventListener('change', function(event){
-            //event.target.value é o texto sendo escrito
-            //event.taget.id é o id do elemento no qual o evento está ocorrendo
-            let id = event.target.id[0];
+        AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY
+
+        transliterationDiv.appendChild(AnswerBox);
+    }
+}
+
+function checkAnswer(event, AnswerBox){
+    let id = event.target.id[0];
             let answer = allBlocks.find(block => block.id == id).transliteraion;
             
             if (event.target.value == answer){
@@ -128,10 +132,6 @@ function createAnswerBox(){
             else{
                 AnswerBox.style.backgroundColor = "lightcoral";
             }
-        });
-
-        transliterationDiv.appendChild(AnswerBox);
-    }
 }
 
 function eraseAnsewerBox(){
