@@ -29,7 +29,7 @@
     display: inline;
 }
 
-.L{
+.letters{
     display: block;
     background-color: lightseagreen;    
     border: 5px solid black;
@@ -39,7 +39,7 @@
 
 }
 
-.T{
+.translits{
     display: block;
     background-color: lightseagreen;    
     border: 5px solid black;

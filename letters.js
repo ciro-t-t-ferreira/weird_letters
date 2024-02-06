@@ -1,17 +1,14 @@
 /*Bug list:
-    -Sometimes I click to change the alphabet and it doesn't work, its kind of random (maybe it's related with the random generator of letters, check creating
-    a smaller alphabet)
     -the first textbox shows a random hint
     -aparently i have some issue when the transliteration is empty
+    -make 
 
   Refat:
-    -Put the devanagari array in a external file (exports are mad complicated, need to study first)
-    -Lots of functions are receveing the alphabet variable, I would like to transform it on a global variable
-    -Tranform the pairs of letter/translit in a object (study the object section in W3Schools)
+    -Put the devanagari array in a external file (exports are mad complicated, need to study first)    
     -Rethink the variables and functions names
     
   Feats:    
-    - Make the number of letters adjustable (maybe from 1-10)
+    - Allow user to change number of letter typing a number
     - WRITTABLE TRANSLIT BOX
         - Allow to write in the translit box when it is turned off
         - Creat a "autocomplet". Example: if the user writes 'ta' automatically show the options 'ta' and 'ṭa' below so he can confirm (allow him to navigate
@@ -25,10 +22,6 @@
 
 let checkboxTranslit = document.getElementById('transliterationBox');
 let checkboxLetter = document.getElementById('letterBox');
-
-let translits = document.querySelectorAll('.translits');
-let letters = document.querySelectorAll('.letters');
-let textboxes = document.querySelectorAll('.textbox');
 
 let allBlocks = [];
 let alphabet;
@@ -64,15 +57,10 @@ function eraseLastBlock(){
 let blockContainer = document.getElementById('blockContainer');
 
 function eraseLastBlockHTML(erasedBlock){    
-    let blockToErase = document.getElementById(erasedBlock.id + 'block');
-    let letterToErase = document.getElementById(erasedBlock.id + 'letter');    
-
-    let transliterationToErase = document.getElementById(erasedBlock.id + 'transliteration');
-
-    blockToErase.removeChild(letterToErase);
-    blockToErase.removeChild(transliterationToErase);
+    let blockToErase = document.getElementById(erasedBlock.id + 'block');    
     blockContainer.removeChild(blockToErase);
 }
+
 let currentLetters = [];
 
 function createBlock(){
@@ -87,20 +75,29 @@ function createHTMLBlock(newBlock){
 
     let blockHTML = document.createElement('span');
     blockHTML.classList.add('block');
-    blockHTML.setAttribute('id', (newBlock.id).toString() + 'block')
+    blockHTML.setAttribute('id', (newBlock.id).toString() + 'block');
     blockContainer.appendChild(blockHTML);
 
-    let letterHTML = document.createElement('span');
-    letterHTML.classList.add('L');
-    letterHTML.setAttribute('id', (newBlock.id).toString() + 'letter')
-    letterHTML.innerHTML = newBlock.letter;
-    blockHTML.appendChild(letterHTML);    
+    let letterDiv = document.createElement('div');
+    letterDiv.setAttribute('id', (newBlock.id).toString() + 'letterDiv');
+    blockHTML.appendChild(letterDiv);    
 
+    
+    let letterHTML = document.createElement('span');
+    letterHTML.classList.add('letters');
+    letterHTML.setAttribute('id', (newBlock.id).toString() + 'letter');
+    letterHTML.innerHTML = newBlock.letter;
+    letterDiv.appendChild(letterHTML);    
+
+    let transliterationDiv = document.createElement('div');
+    transliterationDiv.setAttribute('id', (newBlock.id).toString() + 'transliterationDiv');
+    blockHTML.appendChild(transliterationDiv);
+    
     let transliteraionHTML = document.createElement('span');
-    transliteraionHTML.classList.add('T');
+    transliteraionHTML.classList.add('translits');
     transliteraionHTML.setAttribute('id', (newBlock.id).toString() + 'transliteration')
     transliteraionHTML.innerHTML = newBlock.transliteraion;
-    blockHTML.appendChild(transliteraionHTML);
+    transliterationDiv.appendChild(transliteraionHTML);
 }
 
 function eraseAllBlocks(){
@@ -145,34 +142,40 @@ function selectRandomLetter(){
 
 function transliterationCheckbox(element){
     
+    if(element == 'letterBox'){
+        let visible = checkboxLetter.checked;        
+        translitsOnOff(visible, 'letterBox');        
+    }
+
     if(element == 'transliterationBox'){
         let visible = checkboxTranslit.checked;
         translitsOnOff(visible,'transliterationBox');        
-    }
-    
-    if(element == 'letterBox'){
-        let visible = checkboxLetter.checked;
-        translitsOnOff(visible, 'letterBox');        
-    }
+    }  
 }
 
 function translitsOnOff(visible, elementName){
     
+    if(elementName == 'letterBox'){
+        let letters = document.querySelectorAll('.letters');
+        letters.forEach(letter => {            
+            letter.style.display = visible? 'initial' : 'none';            
+            });
+            
+    }
+
     if(elementName == 'transliterationBox'){
 
+        let translits = document.querySelectorAll('.translits');
+        let textboxes = document.querySelectorAll('.textbox');
+        
         translits.forEach(translit => {
-            translit.style.display = visible ? 'initial' : 'none';
+            
+            translit.style.display = visible ? 'initial' : 'none';            
+            
         })
         textboxes.forEach(textbox =>{ 
             textbox.style.display = visible? 'none': 'inline';
             })        
-    }
-
-    if(elementName == 'letterBox'){
-        
-        letters.forEach(letter => {
-            letter.style.display = visible? 'initial' : 'none';});
-        
     }
 }
 
@@ -227,20 +230,6 @@ function checkanswer(t){
         
 }
 
-
-/*function refresh(){   
-        
-    listaElementos = fillItems(5, alphabet);
-
-    for (let i = 0; i < 5; i++){
-
-        document.getElementById('l'+ i).innerHTML = listaElementos[i][0];
-        document.getElementById('t'+ i).innerHTML = listaElementos[i][1];
-
-    }
-    
-} */
-
 function changeAlphabet(alphabetSelected){  
     
     const alphabetMap = {
@@ -253,102 +242,31 @@ function changeAlphabet(alphabetSelected){
 }
 
 const devanagariDictionary = {
-  'क': 'ka',
-  'ख': 'kha',
-  'ग': 'ga',
-  'घ': 'gha',
-  'ङ': 'ṅa',
+  'क': 'ka', 'ख': 'kha', 'ग': 'ga', 'घ': 'gha', 'ङ': 'ṅa',
+  'च': 'ca', 'छ': 'cha', 'ज': 'ja', 'झ': 'jha', 'ञ': 'ña',
+  'ट': 'ṭa', 'ठ': 'ṭha', 'ड': 'ḍa', 'ढ': 'ḍha', 'ण': 'ṇa',
+  'त': 'ta', 'थ': 'tha', 'द': 'da', 'ध': 'dha', 'न': 'na',
+  'प': 'pa', 'फ': 'pha', 'ब': 'ba', 'भ': 'bha', 'म': 'ma',
+  'य': 'ya', 'र': 'ra', 'ल': 'la', 'व': 'va', 'श': 'śa',
+  'ष': 'ṣa', 'स': 'sa', 'ह': 'ha',
 
-  'च': 'ca',
-  'छ': 'cha',
-  'ज': 'ja',
-  'झ': 'jha',
-  'ञ': 'ña',
+  'क्ष': 'kṣa', 'त्र': 'tra', 'ज्ञ': 'jña',
 
-  'ट': 'ṭa',
-  'ठ': 'ṭha',
-  'ड': 'ḍa',
-  'ढ': 'ḍha',
-  'ण': 'ṇa',
+  'अ': 'a', 'आ': 'ā', 'इ': 'i', 'ई': 'ī', 'उ': 'u',
+  'ऊ': 'ū', 'ऋ': 'ṛ', 'ॠ': 'ṝ', 'ल': 'l', 'ए': 'e',
+  'ऐ': 'ai', 'ओ': 'o', 'औ': 'au',
 
-  'त': 'ta',
-  'थ': 'tha',
-  'द': 'da',
-  'ध': 'dha',
-  'न': 'na',
-
-  'प': 'pa',
-  'फ': 'pha',
-  'ब': 'ba',
-  'भ': 'bha',
-  'म': 'ma',
-
-  'य': 'ya',
-  'र': 'ra',
-  'ल': 'la',
-  'व': 'va',
-  'श': 'śa',
-
-  'ष': 'ṣa',
-  'स': 'sa',
-  'ह': 'ha',
-
-  'क्ष': 'kṣa',
-  'त्र': 'tra',
-  'ज्ञ': 'jña',
-
-  'अ': 'a',
-  'आ': 'ā',
-  'इ': 'i',
-  'ई': 'ī',
-  'उ': 'u',
-  'ऊ': 'ū',
-  'ऋ': 'ṛ',
-  'ॠ': 'ṝ',
-  'ल': 'l',
-  'ए': 'e',
-  'ऐ': 'ai',
-  'ओ': 'o',
-  'औ': 'au',
-
-  'अं': 'ṃ',
-  'अः': 'ḥ'
+  'अं': 'ṃ', 'अः': 'ḥ'
 }; 
 
 const cyrillicDictionary = {
-    'а': 'a',
-    'б': 'b',
-    'в': 'v',
-    'г': 'g',
-    'д': 'd',
-    'е': 'e',
-    'ё': 'yo',
-    'ж': 'zh',
-    'з': 'z',
-    'и': 'i',
-    'й': 'y',
-    'к': 'k',
-    'л': 'l',
-    'м': 'm',
-    'н': 'n',
-    'о': 'o',
-    'п': 'p',
-    'р': 'r',
-    'с': 's',
-    'т': 't',
-    'у': 'u',
-    'ф': 'f',
-    'х': 'kh',
-    'ц': 'ts',
-    'ч': 'ch',
-    'ш': 'sh',
-    'щ': 'sch',
-    'ъ': "'",
-    'ы': 'y',
-    'ь': '',
-    'э': 'e',
-    'ю': 'yu',
-    'я': 'ya'
+    'а': 'a', 'б': 'b', 'в': 'v',  'г': 'g', 'д': 'd',
+    'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+    'й': 'y', 'к': 'k', 'л': 'l',  'м': 'm',  'н': 'n',
+    'о': 'o', 'п': 'p', 'р': 'r',  'с': 's', 'т': 't',
+    'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts','ч': 'ch',
+    'ш': 'sh', 'щ': 'sch', 'ъ': "'",'ы': 'y','ь': '',
+    'э': 'e',  'ю': 'yu',  'я': 'ya'
   };
 
 // Inicializations
