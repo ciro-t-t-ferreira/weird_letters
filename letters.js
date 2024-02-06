@@ -1,7 +1,7 @@
 /*Bug list:
     -the first textbox shows a random hint
     -aparently i have some issue when the transliteration is empty
-    -make 
+    -the current answers disappear every time I turn translits ond and off again 
 
   Refat:
     -Put the devanagari array in a external file (exports are mad complicated, need to study first)    
@@ -115,6 +115,21 @@ function createAnswerBox(){
         AnswerBox.setAttribute('type', 'text');
         AnswerBox.setAttribute('id', i + 'AnswerBox');
         AnswerBox.classList.add('answerBox');
+
+        AnswerBox.addEventListener('change', function(event){
+            //event.target.value é o texto sendo escrito
+            //event.taget.id é o id do elemento no qual o evento está ocorrendo
+            let id = event.target.id[0];
+            let answer = allBlocks.find(block => block.id == id).transliteraion;
+            
+            if (event.target.value == answer){
+                AnswerBox.style.backgroundColor = "lightgreen";
+            }
+            else{
+                AnswerBox.style.backgroundColor = "lightcoral";
+            }
+        });
+
         transliterationDiv.appendChild(AnswerBox);
     }
 }
