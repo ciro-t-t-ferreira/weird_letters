@@ -157,8 +157,10 @@ function translitsOnOff(visible, elementName){
     
     if(elementName == 'letterBox'){
         let letters = document.querySelectorAll('.letters');
-        letters.forEach(letter => {            
-            letter.style.display = visible? 'initial' : 'none';            
+        let i = 0;
+        letters.forEach(letter => {        
+            letter.innerHTML = visible? allBlocks[i].letter : '-';
+            i += 1;            
             });
             
     }
