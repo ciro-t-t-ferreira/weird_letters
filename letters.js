@@ -23,7 +23,6 @@
     - Make it responsive for smartphone
     - Make it pretty*/
 
-
 let checkboxTranslit = document.getElementById('transliterationBox');
 let checkboxLetter = document.getElementById('letterBox');
 
@@ -39,7 +38,7 @@ class block{
     constructor(letter){
         this.id = currentId === null ? 0 : currentId;
         this.letter = letter;
-        this.transliteraion = devanagariDictionary[letter];
+        this.transliteraion = alphabet[letter];
         currentId += 1;
         allBlocks.push(this);                
     }
@@ -77,15 +76,14 @@ function eraseLastBlockHTML(erasedBlock){
 let currentLetters = [];
 
 function createBlock(){
-    let newLetter = selectRandomLetter();
-    let newBlock = new block(newLetter);
-    
+    let newLetter = selectRandomLetter();    
+    let newBlock = new block(newLetter);    
     currentLetters.push(newLetter);
     
     createHTMLBlock(newBlock);       
 }
 
-function createHTMLBlock(newBlock){    
+function createHTMLBlock(newBlock){
 
     let blockHTML = document.createElement('span');
     blockHTML.classList.add('block');
@@ -125,7 +123,7 @@ function refresh(){
 
 function selectRandomLetter(){
 
-    const alphabetArray = Object.keys(devanagariDictionary);
+    const alphabetArray = Object.keys(alphabet);
     if (currentLetters.length < alphabetArray.length){
         let n = alphabetArray.length;     
         let i = randomIntFromInterval(0,n-1);
@@ -243,91 +241,23 @@ function checkanswer(t){
     
 } */
 
-function changeAlphabet(numLetters, alphabetSelected){      
+function changeAlphabet(alphabetSelected){  
     
     const alphabetMap = {
         "devanagari":devanagariDictionary,
         "cyrillic":cyrillicDictionary
     }
-    alphabet = alphabetMap[alphabetSelected];
-    
+    alphabet = alphabetMap[alphabetSelected];        
     refresh();
     
 }
 
-const devanagari =[
-    ['क', 'ka'], 
-    ['ख', 'kha'],
-    ['ग', 'ga'],
-    ['घ', 'gha'],
-    ['ङ', 'ṅa'],
-
-    ['च', 'ca'],
-    ['छ', 'cha'],
-    ['ज', 'ja'],
-    ['झ', 'jha'],
-    ['ञ', 'ña'],
-
-    ['ट', 'ṭa'],
-    ['ठ', 'ṭha'],
-    ['ड', 'ḍa'],
-    ['ढ', 'ḍha'],
-    ['ण', 'ṇa'],
-
-    ['त', 'ta'],
-    ['थ', 'tha'],
-    ['द', 'da'],
-    ['ध', 'dha'],
-    ['न', 'na'],
-
-    ['प', 'pa'],
-    ['फ', 'pha'],
-    ['ब', 'ba'],
-    ['भ', 'bha'],
-    ['म', 'ma'],
-
-    ['य', 'ya'],
-    ['र', 'ra'],
-    ['ल', 'la'],
-    ['व', 'va'],
-    ['श', 'śa'],
-
-    ['ष', 'ṣa'],
-    ['स', 'sa'],
-    ['ह', 'ha'],
-
-    ['क्ष', 'kṣa'],
-    ['त्र', 'tra'],
-    ['ज्ञ', 'jña'],
-
-    ['अ', 'a'],
-    ['आ', 'ā'],
-    ['इ', 'i'],
-    ['ई', 'ī'],
-    ['उ', 'u'],
-    ['ऊ', 'ū'],
-    ['ऋ', 'ṛ'],
-    ['ॠ', 'ṝ'],
-    ['ल', 'l'],
-    ['ए', 'e'],
-    ['ऐ', 'ai'],
-    ['ओ', 'o'],
-    ['औ', 'au'],
-
-    ['अं', 'ṃ'],
-    ['अः', 'ḥ']];
-
 const devanagariDictionary = {
-  'A': 'a',
-  'B': 'b',
-  'C': 'c',
-  'D': 'd'}
-  
-   /*'क': 'ka',
+  'क': 'ka',
   'ख': 'kha',
   'ग': 'ga',
   'घ': 'gha',
-  'ङ': 'ṅa'}
+  'ङ': 'ṅa',
 
   'च': 'ca',
   'छ': 'cha',
@@ -383,43 +313,7 @@ const devanagariDictionary = {
 
   'अं': 'ṃ',
   'अः': 'ḥ'
-}; */
-
-const cyrillic = [
-['а', 'a'],
-['б', 'b'],
-['в', 'v'],
-['г', 'g'],
-['д', 'd'],
-['е', 'e'],
-['ё', 'yo'],
-['ж', 'zh'],
-['з', 'z'],
-['и', 'i'],
-['й', 'y'],
-['к', 'k'],
-['л', 'l'],
-['м', 'm'],
-['н', 'n'],
-['о', 'o'],
-['п', 'p'],
-['р', 'r'],
-['с', 's'],
-['т', 't'],
-['у', 'u'],
-['ф', 'f'],
-['х', 'kh'],
-['ц', 'ts'],
-['ч', 'ch'],
-['ш', 'sh'],
-['щ', 'sch'],
-['ъ', "'"],
-['ы', 'y'],
-['ь', ''],
-['э', 'e'],
-['ю', 'yu'],
-['я', 'ya']
-];
+}; 
 
 const cyrillicDictionary = {
     'а': 'a',
@@ -456,3 +350,10 @@ const cyrillicDictionary = {
     'ю': 'yu',
     'я': 'ya'
   };
+
+// Inicializations
+changeAlphabet('devanagari');
+
+for (let i = 0; i < 5; i++) {
+    createBlock(); 
+}
