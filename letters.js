@@ -149,34 +149,32 @@ function checkAnswer(event, AnswerBox){
 }
 
 let currentSuggestionBox = null;
-function createSuggestionBox(event, AnswerBox, transliterationDiv){
-        
-    //IT NEEDS THE CONDITIONAL OF MATCHING WITH POSSIBLE SUGGESTIONS
-    
-    /*
-    let me explain the intended logic of eraseSuggestionBox: if a suggestionBox already exists and the function is called
-    it is supposed to erase this suggestion box. This is done before the conditioned creation of a newSuggestionBox 
-    so if the current input needs to show a list of suggestions it will show one and only one 
-    */
+function createSuggestionBox(event, AnswerBox, transliterationDiv){      
+       
     if (currentSuggestionBox != null){        
         currentSuggestionBox.remove();
     }
 
-    let id = event.target.id[0];    
+    let id = event.target.id[0];
+    let input = event.target.value;    
     let suggestionBox = document.createElement('textarea'); 
     
     let suggestionBoxID = id + 'suggestionBox';
     let allSuggestionBoxes = document.getElementsByClassName('suggestionBox');    
     let boxesWithSameId = allSuggestionBoxes.length;
 
-    if (boxesWithSameId == 0){
-        suggestionBox.setAttribute('id', suggestionBoxID);      
-        suggestionBox.classList.add('suggestionBox');
-        suggestionBox.innerHTML = event.target.value;
+    //let suggestionList = selectSuggestions(input);
 
-        transliterationDiv.appendChild(suggestionBox);        
-    }
-    currentSuggestionBox = suggestionBox;
+    //if (suggestionList.length !== 0){
+        if (boxesWithSameId == 0){
+            suggestionBox.setAttribute('id', suggestionBoxID);      
+            suggestionBox.classList.add('suggestionBox');
+            suggestionBox.innerHTML = input;
+
+            transliterationDiv.appendChild(suggestionBox);        
+        }
+        currentSuggestionBox = suggestionBox;
+    //}
 
 }
 
@@ -187,6 +185,45 @@ function eraseAnsewerBox(){
         
         transliterationDiv.removeChild(AnswerBox);
     }
+}
+
+function selectSuggestions(input){    
+    let suggestionList = [];
+    let allTransliterations = Object.values(alphabet);   
+    
+
+    if(input.length != 0){
+        
+        //faz um sub array do allTransliterations só com as opções com mesmo comprimento do input
+        let sameSizeTransliterations = [];
+        for (i=0; i < allTransliterations.length; i++){
+            if(input.length == allTransliterations[i].length){
+                sameSizeTransliterations.push(allTransliterations[i]);
+            }
+        }
+
+        for (i=0; i < sameSizeTransliterations.length; i++){
+            
+            let currentTransliteration = sameSizeTransliterations[i];
+            let willInclude = true;                
+
+                for (j=0; j < input.length; j++){
+                    let isEqual = input[j] == currentTransliteration[j]; //should be replaced with isEquivalent
+
+                    if(!isEqual){
+                        willInclude = false;
+                        }
+
+                }
+
+            if (willInclude){
+                console.log('included:' + currentTransliteration)
+                suggestionList.push(currentTransliteration);                             
+            }
+        }
+    }
+
+    return suggestionList;
 }
 
 function refresh(){
