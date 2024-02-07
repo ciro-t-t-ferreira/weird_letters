@@ -163,18 +163,18 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
     let allSuggestionBoxes = document.getElementsByClassName('suggestionBox');    
     let boxesWithSameId = allSuggestionBoxes.length;
 
-    //let suggestionList = selectSuggestions(input);
+    let suggestionList = selectSuggestions(input);
 
-    //if (suggestionList.length !== 0){
+    if (suggestionList.length !== 0){
         if (boxesWithSameId == 0){
             suggestionBox.setAttribute('id', suggestionBoxID);      
             suggestionBox.classList.add('suggestionBox');
-            suggestionBox.innerHTML = input;
+            suggestionBox.innerHTML = suggestionList;
 
             transliterationDiv.appendChild(suggestionBox);        
         }
         currentSuggestionBox = suggestionBox;
-    //}
+    }
 
 }
 
