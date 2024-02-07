@@ -1,7 +1,8 @@
 /*Bug list:
     -the first textbox shows a random hint
     -aparently i have some issue when the transliteration is empty
-    -the current answers disappear every time I turn translits ond and off again 
+    -the current answers disappear every time I turn translits ond and off again
+    -clicking refresh with letters/transliterations toggled off make them be visible again 
 
   Refat:
     -Put the devanagari array in a external file (exports are mad complicated, need to study first)    
@@ -116,7 +117,12 @@ function createAnswerBox(){
         AnswerBox.setAttribute('id', i + 'AnswerBox');
         AnswerBox.classList.add('answerBox');
 
+        
+        console.log('hi')
         AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY
+        //AnswerBox.addEventListener('change', function(){isFirstInput = true;});         
+        AnswerBox.addEventListener('input', function(event){createSuggestionBox(event, AnswerBox, 
+            transliterationDiv)})
 
         transliterationDiv.appendChild(AnswerBox);
     }
@@ -132,6 +138,25 @@ function checkAnswer(event, AnswerBox){
             else{
                 AnswerBox.style.backgroundColor = "lightcoral";
             }
+}
+
+
+function createSuggestionBox(event, AnswerBox, transliterationDiv){
+        
+    let id = event.target.id[0];    
+    let suggestionBox = document.createElement('textarea'); 
+    
+    let suggestionBoxID = id + 'suggestionBox';
+    let allSuggestionBoxes = document.getElementsByClassName('suggestionBox');    
+    let boxesWithSameId = allSuggestionBoxes.length;
+
+    if (boxesWithSameId == 0){
+        suggestionBox.setAttribute('id', suggestionBoxID);      
+        suggestionBox.classList.add('suggestionBox');
+
+        transliterationDiv.appendChild(suggestionBox);        
+    }
+
 }
 
 function eraseAnsewerBox(){

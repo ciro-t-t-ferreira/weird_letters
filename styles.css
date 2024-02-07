@@ -55,5 +55,15 @@
     font-size: 50px;
     margin: 7px;
     width: 100px;
-    text-align:center;
+    text-align:center;    
+}
+
+.suggestionBox{
+    display: block;   
+    border: 5px solid black;
+    padding: 15px;    
+    font-size: 50px;
+    margin: 7px;
+    width: 100px;
+    text-align:center;    
 }
