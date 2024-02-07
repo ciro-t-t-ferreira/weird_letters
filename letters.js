@@ -190,11 +190,10 @@ function eraseAnsewerBox(){
 function selectSuggestions(input){    
     let suggestionList = [];
     let allTransliterations = Object.values(alphabet);   
-    
+      
 
     if(input.length != 0){
         
-        //faz um sub array do allTransliterations só com as opções com mesmo comprimento do input
         let sameSizeTransliterations = [];
         for (i=0; i < allTransliterations.length; i++){
             if(input.length == allTransliterations[i].length){
@@ -202,28 +201,34 @@ function selectSuggestions(input){
             }
         }
 
-        for (i=0; i < sameSizeTransliterations.length; i++){
-            
+        for (let i = 0; i < sameSizeTransliterations.length; i++){
+                        
             let currentTransliteration = sameSizeTransliterations[i];
             let willInclude = true;                
 
-                for (j=0; j < input.length; j++){
-                    let isEqual = input[j] == currentTransliteration[j]; //should be replaced with isEquivalent
+                for (let j = 0; j < input.length; j++){
+                    
+                    let normalizedLetter = removeAccents(currentTransliteration[j])
+                    let isEquivalent = input[j] == normalizedLetter; 
 
-                    if(!isEqual){
+                    if(!isEquivalent){
                         willInclude = false;
                         }
 
                 }
 
             if (willInclude){
-                console.log('included:' + currentTransliteration)
                 suggestionList.push(currentTransliteration);                             
             }
         }
     }
+    console.log('sugestion: ' + suggestionList + '    input:' + input);
 
     return suggestionList;
+}
+
+function removeAccents(letter) {
+    return letter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 }
 
 function refresh(){
