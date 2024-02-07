@@ -1,4 +1,14 @@
-/*Bug list:
+/*
+  FULL SITE:
+-Header should have the language selector, that will affect the whole site.
+-Submenus:
+    -Alphabet practice: the current module. Should also have a button to show a static screen with all 
+        words/transliterations organized.
+    -Word pratice: connects with API to be able to generate random words in the language so you can transliterate
+    -About section: text about site/autor/tecnical aspects. Should be bilingual, with translations of the 
+        selected language
+
+  Bug list:
     -the first textbox shows a random hint
     -aparently i have some issue when the transliteration is empty
     -the current answers disappear every time I turn translits ond and off again
@@ -118,9 +128,7 @@ function createAnswerBox(){
         AnswerBox.classList.add('answerBox');
 
         
-        console.log('hi')
-        AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY
-        //AnswerBox.addEventListener('change', function(){isFirstInput = true;});         
+        AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY               
         AnswerBox.addEventListener('input', function(event){createSuggestionBox(event, AnswerBox, 
             transliterationDiv)})
 
@@ -140,9 +148,20 @@ function checkAnswer(event, AnswerBox){
             }
 }
 
-
+let currentSuggestionBox = null;
 function createSuggestionBox(event, AnswerBox, transliterationDiv){
         
+    //IT NEEDS THE CONDITIONAL OF MATCHING WITH POSSIBLE SUGGESTIONS
+    
+    /*
+    let me explain the intended logic of eraseSuggestionBox: if a suggestionBox already exists and the function is called
+    it is supposed to erase this suggestion box. This is done before the conditioned creation of a newSuggestionBox 
+    so if the current input needs to show a list of suggestions it will show one and only one 
+    */
+    if (currentSuggestionBox != null){        
+        currentSuggestionBox.remove();
+    }
+
     let id = event.target.id[0];    
     let suggestionBox = document.createElement('textarea'); 
     
@@ -153,9 +172,11 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
     if (boxesWithSameId == 0){
         suggestionBox.setAttribute('id', suggestionBoxID);      
         suggestionBox.classList.add('suggestionBox');
+        suggestionBox.innerHTML = event.target.value;
 
         transliterationDiv.appendChild(suggestionBox);        
     }
+    currentSuggestionBox = suggestionBox;
 
 }
 
@@ -270,26 +291,6 @@ function fillItems (N, alphabet){
 }
 
 let listaElementos;
-
-function checkanswer(t){  //needs to be changed!  
-    
-    const letterIndexMap = {
-        "w0":0,
-        "w1":1,
-        "w2":2,
-        "w3":3,
-        "w4":4
-    }        
-        
-        if (textboxes[letterIndexMap[t]].value == listaElementos[letterIndexMap[t]][1]){
-            
-            textboxes[letterIndexMap[t]].style.backgroundColor = "lightgreen"; 
-        } 
-        else {            
-            textboxes[letterIndexMap[t]].style.backgroundColor = "lightcoral";
-        }        
-        
-}
 
 function changeAlphabet(alphabetSelected){  
     
