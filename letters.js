@@ -1,7 +1,7 @@
 /*
   FULL SITE:
 -Header should have the language selector, that will affect the whole site.
--Submenus:
+-Sub-menus:
     -Alphabet practice: the current module. Should also have a button to show a static screen with all 
         words/transliterations organized.
     -Word pratice: connects with API to be able to generate random words in the language so you can transliterate
@@ -9,22 +9,22 @@
         selected language
 
   Bug list:
-    -the first textbox shows a random hint
     -aparently i have some issue when the transliteration is empty
     -the current answers disappear every time I turn translits ond and off again
+    -the placement of the suggestion box bugs when I turn translits on/off
     -clicking refresh with letters/transliterations toggled off make them be visible again 
 
   Refat:
     -Put the devanagari array in a external file (exports are mad complicated, need to study first)    
     -Rethink the variables and functions names
+    -Clean the code
     
   Feats:    
     - Allow user to change number of letter typing a number
-    - WRITTABLE TRANSLIT BOX
-        - Allow to write in the translit box when it is turned off
-        - Creat a "autocomplet". Example: if the user writes 'ta' automatically show the options 'ta' and 'ṭa' below so he can confirm (allow him to navigate
+    - WRITTABLE TRANSLIT BOX        
+        - Creat a "autocomplete". Example: if the user writes 'ta' automatically show the options 'ta' and 'ṭa' below so he can confirm (allow him to navigate
         using up and down arrows)
-        - When he press enter or exits the textbox change the color to green/red to show if he got the answer right or wrong 
+         
   Usability:
     - Make just the letters disappear, not the whole box
     - Keep the relative position of all buttons even when some disappear
@@ -121,16 +121,18 @@ function eraseAllBlocks(){
 function createAnswerBox(){
 
     for (let i = 0; i < allBlocks.length; i++){
+        
         let transliterationDiv = document.getElementById(i + 'transliterationDiv');
         let AnswerBox = document.createElement('input');
+
         AnswerBox.setAttribute('type', 'text');
         AnswerBox.setAttribute('id', i + 'AnswerBox');
-        AnswerBox.classList.add('answerBox');
 
+        AnswerBox.classList.add('answerBox');
         
         AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY               
-        AnswerBox.addEventListener('input', function(event){createSuggestionBox(event, AnswerBox, 
-            transliterationDiv)})
+        AnswerBox.addEventListener('input', function(event){createSuggestionBox(event, AnswerBox, transliterationDiv);})
+        AnswerBox.addEventListener('keyup', function(event){selectSuggestion(event)})
 
         transliterationDiv.appendChild(AnswerBox);
     }
@@ -150,7 +152,10 @@ function checkAnswer(event, AnswerBox){
 
 let currentSuggestionBox = null;
 function createSuggestionBox(event, AnswerBox, transliterationDiv){      
-       
+    
+    counter = 0;
+    selectedSuggestion = null;
+    
     if (currentSuggestionBox != null){        
         currentSuggestionBox.remove();
     }
@@ -163,14 +168,14 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
     let allSuggestionBoxes = document.getElementsByClassName('suggestionBox');    
     let boxesWithSameId = allSuggestionBoxes.length;
 
-    let suggestionList = selectSuggestions(input);
-
+    let suggestionList = getSuggestions(input);
+    
     if (suggestionList.length !== 0){
         if (boxesWithSameId == 0){
             suggestionBox.setAttribute('id', suggestionBoxID);      
             suggestionBox.classList.add('suggestionBox');
             suggestionBox.innerHTML = suggestionList;
-
+            
             transliterationDiv.appendChild(suggestionBox);        
         }
         currentSuggestionBox = suggestionBox;
@@ -187,7 +192,7 @@ function eraseAnsewerBox(){
     }
 }
 
-function selectSuggestions(input){    
+function getSuggestions(input){    
     let suggestionList = [];
     let allTransliterations = Object.values(alphabet);   
       
@@ -222,10 +227,54 @@ function selectSuggestions(input){
             }
         }
     }
-    console.log('sugestion: ' + suggestionList + '    input:' + input);
 
     return suggestionList;
 }
+
+let counter = 0;
+let selectedSuggestion;
+function selectSuggestion(event){
+    
+    
+    let suggestions = [null];
+    suggestions = suggestions.concat(getSuggestions(event.target.value));
+    
+    if ((counter >= 0) && (counter <= suggestions.length)){
+        if (event.key == 'ArrowDown'){
+            
+            counter = refreshCounter(event.key, counter, suggestions.length); //can be refactored
+            selectedSuggestion = suggestions[counter];
+            
+            console.log(selectedSuggestion);
+            
+        }
+        
+        else if (event.key == 'ArrowUp') {
+            
+            counter = refreshCounter(event.key, counter, suggestions.length);
+            selectedSuggestion = suggestions[counter];
+            console.log(selectedSuggestion);
+        }
+    }
+    
+    if (event.key == 'Enter'){
+        console.log('select:' + selectedSuggestion);
+    }
+}
+
+function refreshCounter(key, oldValue, size){
+    newValue = oldValue;
+    if ((key == 'ArrowDown') && (oldValue < size - 1)){
+        newValue = oldValue + 1;
+    }
+
+    else if ((key == 'ArrowUp') && (oldValue > 0)){
+        newValue = oldValue -1;
+
+    }
+    return newValue
+
+};
 
 function removeAccents(letter) {
     return letter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
