@@ -13,6 +13,7 @@
     -the current answers disappear every time I turn translits ond and off again
     -the placement of the suggestion box bugs when I turn translits on/off
     -clicking refresh with letters/transliterations toggled off make them be visible again 
+    -suggestion box don't close when changing to other answerBox
 
   Refat:
     -Put the devanagari array in a external file (exports are mad complicated, need to study first)    
@@ -22,8 +23,7 @@
   Feats:    
     - Allow user to change number of letter typing a number
     - WRITTABLE TRANSLIT BOX        
-        - Creat a "autocomplete". Example: if the user writes 'ta' automatically show the options 'ta' and 'ṭa' below so he can confirm (allow him to navigate
-        using up and down arrows)
+        - I just need to show which suggestion the user is selecting
          
   Usability:
     - Make just the letters disappear, not the whole box
@@ -59,10 +59,7 @@ function eraseLastBlock(){
         eraseLastBlockHTML(erasedBlock);
 
         currentId -= 1;                 
-    }
-    else {
-        window.alert('There are no blocks to be erased');
-    }
+    }    
 }
 
 let blockContainer = document.getElementById('blockContainer');
@@ -132,7 +129,8 @@ function createAnswerBox(){
         
         AnswerBox.addEventListener('change', function(event){checkAnswer(event, AnswerBox)}); //FIND MORE SUSCINT WAY               
         AnswerBox.addEventListener('input', function(event){createSuggestionBox(event, AnswerBox, transliterationDiv);})
-        AnswerBox.addEventListener('keyup', function(event){selectSuggestion(event)})
+        AnswerBox.addEventListener('keydown', function(event){selectSuggestion(event, AnswerBox)}) 
+        AnswerBox.addEventListener('blur', function(){eraseAllSuggestionBoxes()})       
 
         transliterationDiv.appendChild(AnswerBox);
     }
@@ -141,7 +139,7 @@ function createAnswerBox(){
 function checkAnswer(event, AnswerBox){
     let id = event.target.id[0];
             let answer = allBlocks.find(block => block.id == id).transliteraion;
-            
+            console.log("input" + event.target.value + "answer:" + answer);
             if (event.target.value == answer){
                 AnswerBox.style.backgroundColor = "lightgreen";
             }
@@ -181,6 +179,12 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
         currentSuggestionBox = suggestionBox;
     }
 
+}
+
+function eraseAllSuggestionBoxes(){
+    let suggestionBoxes = document.getElementsByClassName('suggestionBox');
+    suggestionBoxes = Array.from(suggestionBoxes);
+    suggestionBoxes.forEach(function(element) {element.remove()})
 }
 
 function eraseAnsewerBox(){
@@ -233,7 +237,7 @@ function getSuggestions(input){
 
 let counter = 0;
 let selectedSuggestion;
-function selectSuggestion(event){
+function selectSuggestion(event, AnswerBox){
     
     
     let suggestions = [null];
@@ -256,9 +260,11 @@ function selectSuggestion(event){
             console.log(selectedSuggestion);
         }
     }
-    
-    if (event.key == 'Enter'){
-        console.log('select:' + selectedSuggestion);
+
+    if ((event.key == 'Enter') && (counter != 0)){
+        console.log(selectedSuggestion);
+        AnswerBox.value = selectedSuggestion;
+        checkAnswer(event, AnswerBox);
     }
 }
 
