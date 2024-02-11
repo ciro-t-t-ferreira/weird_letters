@@ -67,3 +67,7 @@
     width: 100px;
     text-align:center;    
 }
+
+.suggestionItem{
+    list-style-type: none;
+}

@@ -26,7 +26,6 @@
         - I just need to show which suggestion the user is selecting
          
   Usability:
-    - Make just the letters disappear, not the whole box
     - Keep the relative position of all buttons even when some disappear
     - Make it responsive for smartphone
     - Make it pretty*/
@@ -160,19 +159,26 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
 
     let id = event.target.id[0];
     let input = event.target.value;    
-    let suggestionBox = document.createElement('textarea'); 
+    let suggestionBox = document.createElement('ul'); 
     
     let suggestionBoxID = id + 'suggestionBox';
     let allSuggestionBoxes = document.getElementsByClassName('suggestionBox');    
     let boxesWithSameId = allSuggestionBoxes.length;
 
     let suggestionList = getSuggestions(input);
-    
     if (suggestionList.length !== 0){
         if (boxesWithSameId == 0){
             suggestionBox.setAttribute('id', suggestionBoxID);      
             suggestionBox.classList.add('suggestionBox');
-            suggestionBox.innerHTML = suggestionList;
+            
+            suggestionList.forEach(s => {
+                let suggestionItem = document.createElement('li');
+                suggestionItem.innerHTML = s;
+                suggestionItem.classList.add('suggestionItem');
+                suggestionBox.appendChild(suggestionItem);
+            })
+            
+            //suggestionBox.innerHTML = suggestionList;
             
             transliterationDiv.appendChild(suggestionBox);        
         }
