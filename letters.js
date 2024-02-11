@@ -21,9 +21,7 @@
     -Clean the code
     
   Feats:    
-    - Allow user to change number of letter typing a number
-    - WRITTABLE TRANSLIT BOX        
-        - I just need to show which suggestion the user is selecting
+    - Allow user to change number of letter by typing a number
          
   Usability:
     - Keep the relative position of all buttons even when some disappear
@@ -138,7 +136,6 @@ function createAnswerBox(){
 function checkAnswer(event, AnswerBox){
     let id = event.target.id[0];
             let answer = allBlocks.find(block => block.id == id).transliteraion;
-            console.log("input" + event.target.value + "answer:" + answer);
             if (event.target.value == answer){
                 AnswerBox.style.backgroundColor = "lightgreen";
             }
@@ -177,7 +174,6 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
                 suggestionItem.innerHTML = s;
                 suggestionItem.classList.add('suggestionItem');
                 suggestionItem.setAttribute('id', suggestionID + 'suggestion');
-                console.log(suggestionItem.id);
                 suggestionID += 1;                    
                 suggestionBox.appendChild(suggestionItem);
             })
@@ -261,9 +257,7 @@ function selectSuggestion(event, AnswerBox){
             selectedSuggestion = suggestions[counter];
 
             let selectedItem = document.getElementById(counter + 'suggestion');
-            selectedItem.classList.add('suggestionItemSelected');
-            
-            console.log(selectedSuggestion);
+            selectedItem.classList.add('suggestionItemSelected');            
             
         }
         
@@ -278,12 +272,10 @@ function selectSuggestion(event, AnswerBox){
                 selectedItem.classList.add('suggestionItemSelected');
             }
 
-            console.log(selectedSuggestion);
         }
     }
 
     if ((event.key == 'Enter') && (counter != 0)){
-        console.log(selectedSuggestion);
         AnswerBox.value = selectedSuggestion;
         checkAnswer(event, AnswerBox);
     }
@@ -390,38 +382,13 @@ function randomIntFromInterval(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
-function fillOneMore (listaElementos, alphabet){    
-    
-    if(alphabet == null){
-        window.alert("select a alphabet!"); //I can transform this in an exception and do something more classy
-    }
-
-    let n = alphabet.length;    
-    let i = randomIntFromInterval(0,n-1);
-    if (listaElementos.includes(alphabet[i])){
-        fillOneMore(listaElementos)
-    } else {
-        let novalistaElementos = listaElementos.concat([alphabet[i]])        
-        return novalistaElementos
-    }
-}
-
-function fillItems (N, alphabet){
-    
-    let _listaElementos = []
-    for (i=0;i<N;i++){
-        _listaElementos = fillOneMore(_listaElementos, alphabet);
-    }    
-    return _listaElementos
-}
-
-let listaElementos;
-
 function changeAlphabet(alphabetSelected){  
     
     const alphabetMap = {
         "devanagari":devanagariDictionary,
-        "cyrillic":cyrillicDictionary
+        "cyrillic":cyrillicDictionary,
+        "greek":greekDictionary,
+        "hebrew":hebrewDictionary
     }
     alphabet = alphabetMap[alphabetSelected];        
     refresh();
@@ -454,7 +421,42 @@ const cyrillicDictionary = {
     'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts','ч': 'ch',
     'ш': 'sh', 'щ': 'sch', 'ъ': "'",'ы': 'y','ь': '',
     'э': 'e',  'ю': 'yu',  'я': 'ya'
-  };
+};
+
+const greekDictionary = {
+    'α': 'a',  'β': 'v',  'γ': 'g',  'δ': 'd',  'ε': 'e',
+    'ζ': 'z',  'η': 'i',  'θ': 'th', 'ι': 'i',  'κ': 'k',
+    'λ': 'l',  'μ': 'm',  'ν': 'n',  'ξ': 'x',  'ο': 'o',
+    'π': 'p',  'ρ': 'r',  'σ': 's',  'τ': 't',  'υ': 'y',
+    'φ': 'ph', 'χ': 'ch', 'ψ': 'ps', 'ω': 'o',  'ά': 'a',
+    'έ': 'e',  'ί': 'i',  'ό': 'o',  'ύ': 'y',  'ή': 'i',
+    'ώ': 'o',  'ς': 's',  'ϊ': 'i',  'ΐ': 'i',  'ϋ': 'y',
+    'ΰ': 'y',  'Α': 'A',  'Β': 'V',  'Γ': 'G',  'Δ': 'D',
+    'Ε': 'E',  'Ζ': 'Z',  'Η': 'I',  'Θ': 'TH', 'Ι': 'I',
+    'Κ': 'K',  'Λ': 'L',  'Μ': 'M',  'Ν': 'N',  'Ξ': 'X',
+    'Ο': 'O',  'Π': 'P',  'Ρ': 'R',  'Σ': 'S',  'Τ': 'T',
+    'Υ': 'Y',  'Φ': 'PH', 'Χ': 'CH', 'Ψ': 'PS', 'Ω': 'O',
+    'Ά': 'A',  'Έ': 'E',  'Ί': 'I',  'Ό': 'O',  'Ύ': 'Y',
+    'Ή': 'I',  'Ώ': 'O'
+};
+
+const hebrewDictionary = {
+    'א': 'a', 'ב': 'b', 'ג': 'g', 'ד': 'd', 'ה': 'h',
+    'ו': 'v', 'ז': 'z', 'ח': 'kh', 'ט': 't', 'י': 'y',
+    'כ': 'k', 'ל': 'l', 'מ': 'm', 'נ': 'n', 'ס': 's',
+    'ע': '',  'פ': 'p', 'צ': 'ts', 'ק': 'q', 'ר': 'r',
+    'ש': 'sh', 'ת': 't', 'ם': 'm', 'ן': 'n', 'ף': 'f',
+    'ץ': 'tz', 'ך': 'kh', 'װ': 'v', 'ױ': 'v', 'ײ': 'y',
+    'יִ': 'i', 'ﬡ': 'a', 'ﬢ': 'a', 'ﬣ': 'a', 'ﬤ': 'a',
+    'ﬥ': 'a', 'ﬦ': 'a', 'ﬧ': 'o', 'ﬨ': 'e', '﬩': 'e',
+    'שׁ': 'sh', 'שׂ': 's', 'שּׁ': 's', 'שּׂ': 't', 'אַ': 'a',
+    'אָ': 'a', 'אּ': 'a', 'בּ': 'b', 'גּ': 'g', 'דּ': 'd',
+    'הּ': 'h', 'וּ': 'v', 'זּ': 'z', 'טּ': 't', 'יּ': 'y',
+    'ךּ': 'k', 'כּ': 'k', 'לּ': 'l', 'מּ': 'm', '﬿': 'm',
+    'נּ': 'n', 'סּ': 's', 'ףּ': 'p', 'פּ': 'p', 'צּ': 'ts',
+    'שּ': 'k', 'תּ': 't', 'וֹ': 'o', 'בֿ': 'v', 'כֿ': 'sh',
+    'פֿ': 'f'
+};
 
 // Inicializations
 changeAlphabet('devanagari');
