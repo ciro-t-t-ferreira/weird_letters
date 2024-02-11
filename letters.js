@@ -171,10 +171,14 @@ function createSuggestionBox(event, AnswerBox, transliterationDiv){
             suggestionBox.setAttribute('id', suggestionBoxID);      
             suggestionBox.classList.add('suggestionBox');
             
+            let suggestionID = 1;
             suggestionList.forEach(s => {
                 let suggestionItem = document.createElement('li');
                 suggestionItem.innerHTML = s;
                 suggestionItem.classList.add('suggestionItem');
+                suggestionItem.setAttribute('id', suggestionID + 'suggestion');
+                console.log(suggestionItem.id);
+                suggestionID += 1;                    
                 suggestionBox.appendChild(suggestionItem);
             })
             
@@ -245,15 +249,19 @@ let counter = 0;
 let selectedSuggestion;
 function selectSuggestion(event, AnswerBox){
     
-    
     let suggestions = [null];
     suggestions = suggestions.concat(getSuggestions(event.target.value));
+    
+    eraseItemSelection();
     
     if ((counter >= 0) && (counter <= suggestions.length)){
         if (event.key == 'ArrowDown'){
             
             counter = refreshCounter(event.key, counter, suggestions.length); //can be refactored
             selectedSuggestion = suggestions[counter];
+
+            let selectedItem = document.getElementById(counter + 'suggestion');
+            selectedItem.classList.add('suggestionItemSelected');
             
             console.log(selectedSuggestion);
             
@@ -263,6 +271,13 @@ function selectSuggestion(event, AnswerBox){
             
             counter = refreshCounter(event.key, counter, suggestions.length);
             selectedSuggestion = suggestions[counter];
+
+            let selectedItem = document.getElementById(counter + 'suggestion');
+            
+            if (counter != 0){
+                selectedItem.classList.add('suggestionItemSelected');
+            }
+
             console.log(selectedSuggestion);
         }
     }
@@ -272,6 +287,13 @@ function selectSuggestion(event, AnswerBox){
         AnswerBox.value = selectedSuggestion;
         checkAnswer(event, AnswerBox);
     }
+}
+
+function eraseItemSelection(){
+    let allSelections = document.getElementsByClassName('suggestionItemSelected');
+    allSelections = Array.from(allSelections);
+    allSelections.forEach(selection => 
+        {selection.classList.remove('suggestionItemSelected');})
 }
 
 function refreshCounter(key, oldValue, size){

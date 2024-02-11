@@ -71,3 +71,7 @@
 .suggestionItem{
     list-style-type: none;
 }
+
+.suggestionItemSelected{
+    background-color: coral;
+}
